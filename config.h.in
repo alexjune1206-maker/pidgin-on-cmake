@@ -1,0 +1,28 @@
+/* config.h.in template modernized for CMake output generation */
+#pragma once
+
+#cmakedefine HAVE_ARPA_NAMESER_COMPAT_H 1
+#cmakedefine HAVE_FCNTL_H 1
+#cmakedefine HAVE_SYS_TIME_H 1
+#cmakedefine HAVE_UNISTD_H 1
+#cmakedefine HAVE_LOCALE_H 1
+#cmakedefine HAVE_SIGNAL_H 1
+#cmakedefine HAVE_STDINT_H 1
+#cmakedefine HAVE_REGEX_H 1
+
+#cmakedefine HAVE_STRDUP 1
+#cmakedefine HAVE_STRSTR 1
+#cmakedefine HAVE_ATEXIT 1
+#cmakedefine HAVE_SETLOCALE 1
+#cmakedefine HAVE_INET_NTOP 1
+#cmakedefine HAVE_GETIFADDRS 1
+
+#cmakedefine HAVE_STRUCT_SOCKADDR_SA_LEN 1
+#cmakedefine NO_WIDECHAR 1
+#cmakedefine USE_GSTREAMER 1
+#cmakedefine USE_VV 1
+#cmakedefine HAVE_DBUS 1
+#cmakedefine DEBUG 1
+
+#define DISPLAY_VERSION "@DISPLAY_VERSION@"
+#define PURPLE_VERSION "@PURPLE_VERSION@"
