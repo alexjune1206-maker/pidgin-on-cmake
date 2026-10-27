@@ -1,0 +1,64 @@
+name: Generate Automated Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggers the workflow only when you push a tag like v2.14.14
+
+jobs:
+  build-and-release:
+    name: Build Project and Deploy Release Artifacts
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            build-essential \
+            cmake \
+            pkg-config \
+            libglib2.0-dev \
+            libxml2-dev \
+            libgtk2.0-dev \
+            libgnt-dev \
+            libncursesw5-dev \
+            libgstreamer1.0-dev \
+            libgstreamer-plugins-base1.0-dev
+
+      - name: Configure Project with CMake
+        run: |
+          cmake -B build -S . \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr
+
+      - name: Compile Source Code
+        run: cmake --build build --parallel $(nproc)
+
+      - name: Stage Installation Files
+        run: |
+          mkdir -p staging_dir
+          DESTDIR=$(pwd)/staging_dir cmake --install build
+
+      - name: Create Release Binary Archive
+        run: |
+          cd staging_dir
+          tar -czf ../pidgin-cmake-linux-x86_64.tar.gz .
+
+      - name: Create GitHub Release and Upload Artifact
+        uses: softprops/action-gh-release@v2
+        with:
+          files: pidgin-cmake-linux-x86_64.tar.gz
+          name: Release ${{ github.ref_name }}
+          body: |
+            Automated binary release generated via modern CMake build pipeline.
+            
+            ### Asset Contents
+            - **pidgin-cmake-linux-x86_64.tar.gz**: Pre-compiled binaries and runtime structures for Linux x86_64 environments.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
