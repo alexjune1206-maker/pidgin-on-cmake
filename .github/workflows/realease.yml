@@ -3,7 +3,7 @@ name: Generate Automated Release
 on:
   push:
     tags:
-      - 'v*' # Triggers the workflow only when you push a tag like v2.14.14
+      - 'v*' # Triggers the workflow only when you push a tag like v2.14.18
 
 jobs:
   build-and-release:
@@ -17,7 +17,8 @@ jobs:
       - name: Install System Dependencies
         run: |
           sudo apt update
-          sudo apt install -y \
+          sudo apt install -y libunwind-dev
+          sudo apt install -f -y \
             build-essential \
             cmake \
             pkg-config \
